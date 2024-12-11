@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/ComplateEcommerce/static/css/main.13560b56.css",
+    "main.js": "/ComplateEcommerce/static/js/main.bf21d7de.js",
+    "static/js/453.2d40735f.chunk.js": "/ComplateEcommerce/static/js/453.2d40735f.chunk.js",
+    "static/media/women_banner.png": "/ComplateEcommerce/static/media/women_banner.39037512011ab61d49e7.png",
+    "static/media/mens_banner.png": "/ComplateEcommerce/static/media/mens_banner.fae2b67241bfbfede7a6.png",
+    "static/media/kids_banner.jpg": "/ComplateEcommerce/static/media/kids_banner.175409bedde6e4666409.jpg",
+    "static/media/hero_image.png": "/ComplateEcommerce/static/media/hero_image.19a6210d641c739f1d38.png",
+    "static/media/logo.png": "/ComplateEcommerce/static/media/logo.258141cbefc88c6df8f6.png",
+    "index.html": "/ComplateEcommerce/index.html",
+    "main.13560b56.css.map": "/ComplateEcommerce/static/css/main.13560b56.css.map",
+    "main.bf21d7de.js.map": "/ComplateEcommerce/static/js/main.bf21d7de.js.map",
+    "453.2d40735f.chunk.js.map": "/ComplateEcommerce/static/js/453.2d40735f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.13560b56.css",
+    "static/js/main.bf21d7de.js"
+  ]
+}
