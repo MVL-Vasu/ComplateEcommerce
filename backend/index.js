@@ -222,7 +222,7 @@ app.post('/signup', async (req, res) => {
 })
 
 
-// Create Endpoint for User Registration
+// Create Endpoint for User Login
 
 app.post('/login', async (req, res) => {
 

@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import './CSS/LoginSignUp.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+import { validate, inputvalidation } from "./Js/ValidateData";
+import Swal from 'sweetalert2'
+// import useForm from 'react-hook-form';
 
 const LoginSignUp = () => {
 
+     // const { register,handleSubmit,watch,formState : {errors},} = useForm(); 
+
+     const navigator = useNavigate();
      const [state, setState] = useState("Login");
      const [formData, setformData] = useState({
           username: "",
@@ -11,20 +20,46 @@ const LoginSignUp = () => {
      });
 
      const login = async () => {
+
           let responseData;
 
-          await fetch('http://localhost:3001/login', {
-               method: 'POST',
-               headers: {
-                    Accept: 'application/form-data',
-                    'Content-Type': 'application/json',
-               },
-               body: JSON.stringify(formData),
-          }).then((resp) => resp.json()).then((data) => responseData = data)
+          if (!validate("login", formData)) {
 
-          if (responseData.success) {
-               localStorage.setItem('auth-token', responseData.token);
-               window.location.replace("/");
+               await fetch('http://localhost:3001/login', {
+                    method: 'POST',
+                    headers: {
+                         Accept: 'application/form-data',
+                         'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+               }).then((resp) => resp.json()).then((data) => responseData = data)
+
+               if (responseData.success) {
+                    localStorage.setItem('auth-token', responseData.token);
+                    toast.success("Login Successfull", {
+                         position: "bottom-center",
+                         autoClose: 5000,
+                         hideProgressBar: false,
+                         closeOnClick: true,
+                         pauseOnHover: false,
+                         draggable: true,
+                         progress: undefined,
+                         theme: "light",
+                    });
+                    navigator("/");
+               }
+               else {
+                    toast.error(responseData.error, {
+                         position: "top-center",
+                         autoClose: 5000,
+                         hideProgressBar: false,
+                         closeOnClick: true,
+                         pauseOnHover: false,
+                         draggable: true,
+                         progress: undefined,
+                         theme: "light",
+                    });
+               }
           }
      };
 
@@ -32,25 +67,31 @@ const LoginSignUp = () => {
 
           let responseData;
 
-          await fetch('http://localhost:3001/signup', {
-               method: 'POST',
-               headers: {
-                    Accept: 'application/form-data',
-                    'Content-Type': 'application/json',
-               },
-               body: JSON.stringify(formData),
-          }).then((resp) => resp.json()).then((data) => responseData = data)
+          if (!validate("signup", formData)) {
+
+               await fetch('http://localhost:3001/signup', {
+                    method: 'POST',
+                    headers: {
+                         Accept: 'application/form-data',
+                         'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+               }).then((resp) => resp.json()).then((data) => responseData = data)
 
 
-          if (responseData.success) {
-               localStorage.setItem('auth-token', responseData.token);
-               window.location.replace("/");
+               if (responseData.success) {
+                    localStorage.setItem('auth-token', responseData.token);
+                    window.location.replace("/");
+               }
+               else {
+                    // swal("Product Deleted Successfully", { icon: "success", })
+                    Swal.fire({
+                         title: 'Sign Up Failed',
+                         text: 'Email already exists',
+                         icon: "error"
+                    })
+               }
           }
-          else{
-               // swal("Product Deleted Successfully", { icon: "success", })
-               alert("Signup Failed");
-          }
-
      };
 
      const changeHandler = (e) => {
@@ -64,11 +105,27 @@ const LoginSignUp = () => {
                     <div className="loginsignup-fields">
 
                          {
-                              state === "Sign Up" ? <input type="text" value={formData.username} onChange={changeHandler} name='username' placeholder='Your Name' /> : <></>
+                              state === "Sign Up"
+                                   ?
+                                   <div className="input-field">
+                                        <i className="success-icon fa-solid fa-circle-check" style={{ color: '#18c994' }}></i>
+                                        <input type="text" id='username' className='input' value={formData.username} onKeyUp={(e) => inputvalidation(e, formData)} onChange={changeHandler} name='username' placeholder='Your Name' spellCheck='false' autoComplete='off' />
+                                        <div className="error name-error"></div>
+                                   </div>
+                                   :
+                                   <></>
                          }
 
-                         <input type="email" value={formData.email} onChange={changeHandler} name='email' placeholder='Email Address' />
-                         <input type="password" value={formData.password} onChange={changeHandler} name='password' placeholder='Password' />
+                         <div className="input-field">
+                              <i className="success-icon fa-solid fa-circle-check" style={{ color: '#18c994' }}></i>
+                              <input type="email" id='email' className='input' value={formData.email} onKeyUp={(e) => inputvalidation(e, formData)} onChange={changeHandler} name='email' placeholder='Enter Email' required />
+                              <div className="error email-error">invalid email </div>
+                         </div>
+                         <div className="input-field">
+                              <i className="success-icon fa-solid fa-circle-check" style={{ color: '#18c994' }}></i>
+                              <input type="password" className='input' id='password' value={formData.password} onKeyUp={(e) => inputvalidation(e, formData)} onChange={changeHandler} name='password' placeholder='password' required />
+                              <div className="error pass-error">invalid password</div>
+                         </div>
                     </div>
 
                     <button onClick={() => state === "Login" ? login() : signup()}>{state}</button>

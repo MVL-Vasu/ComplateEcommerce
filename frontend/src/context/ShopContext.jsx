@@ -41,8 +41,8 @@ const ShopContextProvider = (props) => {
      }, [])
 
      const addToCart = (itemId) => {
-          setcartItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
           if (localStorage.getItem('auth-token')) {
+               setcartItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
                fetch('http://localhost:3001/addtocart', {
                     method: 'POST',
                     headers: {
@@ -61,13 +61,19 @@ const ShopContextProvider = (props) => {
                     })
           }
           else {
-               alert("no token found");
+               Swal.fire({
+                    title : "Please Login/Register",
+                    text: "Login to Add to Cart",
+                    icon : "warning",
+                    timer: 3000
+               })
+               window.location.replace("#/login");
           }
      }
 
      const RemoveFromCart = (itemId) => {
-          setcartItem((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
           if (localStorage.getItem('auth-token')) {
+               setcartItem((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
                fetch('http://localhost:3001/removefromcart', {
                     method: 'POST',
                     headers: {

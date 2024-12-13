@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import './NewCollections.css';
-import products from './products.json'; // Import the JSON file
 import Item from '../Item/Item';
 import { useState } from 'react';
 

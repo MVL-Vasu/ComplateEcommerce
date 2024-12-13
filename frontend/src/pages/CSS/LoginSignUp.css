@@ -24,18 +24,55 @@
      margin-top: 30px;
 }
 
+.input-field{
+     /* display: ; */
+     position: relative;
+     width: 100%;
+     margin-bottom: 8px;
+}
+
+.success-icon{
+     position: absolute;
+     display: none;
+     right: 20px;
+     font-size: 25px;
+     top: 50%;
+     translate: 0 -50%;
+}
+
+.error{
+     display: none;
+     color: red;
+     font-weight: 600;
+     position: absolute;
+     bottom: -22px;
+}
+
+.input-field label{
+     display: block;
+     /* position: absolute; */
+     /* top: 50%; */
+     /* left: 20px; */
+     background-color: white;
+     /* translate: 0 -50%; */
+     transition: .5s ease-in-out;
+}
+
 .loginsignup-fields input{
      height: 72px;
      width: 100%;
+     box-sizing: border-box;
      padding-left: 20px;
      border: 1px solid #c9c9c9;
-     outline: none;
+     outline: none; 
      color: #5c5c5c;
      font-size: 18px;
 }
 
+
+
 .loginsignup-fields input:focus{
-     outline: 1px solid #ff4141;
+     outline: 1px solid #55fffc;
 }
 
 .loginsignup-container button{
