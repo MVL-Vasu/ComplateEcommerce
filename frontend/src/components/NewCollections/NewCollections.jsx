@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import './NewCollections.css';
 import Item from '../Item/Item';
 import { useState } from 'react';
+import api_paths from '../../config/apis';
 
 const NewCollections = () => {
 
      const [newcollection, setnewcollection] = useState([]);
 
      useEffect(() => {
-          fetch('http://localhost:3001/necollections')
+          fetch(api_paths.newcollections)
                .then((response) => response.json())
                .then((data) => setnewcollection(data))
      }, []);

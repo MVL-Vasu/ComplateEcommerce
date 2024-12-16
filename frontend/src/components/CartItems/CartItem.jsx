@@ -11,7 +11,7 @@ const CartItem = () => {
           <div className='cartitems'>
                <div className="cartitems-format-main">
                     <p>Products</p>
-                    <p>Title</p>
+                    <p>Title</p> 
                     <p>Price</p>
                     <p>Quantity</p>
                     <p>Total</p>

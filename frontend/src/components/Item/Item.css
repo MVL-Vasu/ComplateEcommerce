@@ -1,25 +1,26 @@
 .item {
-     width: 350px;
+     width: 265px;
 }
 
 .item p {
-     margin: 6px 0px;
+     margin: 3px 0px;
+     font-size: 14px;
 }
 
 .item-prices {
      display: flex;
-     gap: 20px;
+     gap: 20px; 
 }
 
 .item-price-new {
      color: #374151;
-     font-size: 18px;
-     font-weight: 600;
+     font-size: 14px;
+     font-weight: 500;
 }
 
 .item-price-old{
      color: #8c8c8c;
-     font-size: 18px;
+     font-size: 14px;
      font-weight: 500;
      text-decoration: line-through;
 }
@@ -31,11 +32,11 @@
 
 .discount{
      color: green;
-     font-weight: 700;
-     font-size: 19px;
+     font-weight: 600;
+     font-size: 15px;
 }
 
 .item-image{
-     height: 470px;
+     height: 360px;
      width: 100%;
 }

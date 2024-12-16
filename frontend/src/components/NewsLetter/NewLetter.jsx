@@ -11,7 +11,7 @@ const NewLetter = () => {
                     <button>Subscribe</button>
                </div>
           </div>
-     );
+     ); 
 }
 
 export default NewLetter;

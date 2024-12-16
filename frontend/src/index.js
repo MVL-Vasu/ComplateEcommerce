@@ -5,13 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ShopContextProvider from './context/ShopContext';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ShopContextProvider>
-      <App />
-    </ShopContextProvider>
     <ToastContainer
       position="top-center"
       autoClose={5000}
@@ -22,7 +20,11 @@ root.render(
       pauseOnFocusLoss
       draggable
       pauseOnHover
-      theme="light" />
+      theme="light"
+    />
+    <ShopContextProvider>
+      <App />
+    </ShopContextProvider>
   </React.StrictMode>
 );
 

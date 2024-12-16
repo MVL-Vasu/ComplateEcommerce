@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './ListProduct.css';
+import api_paths from '../../config/apis';
 
 const ListProduct = () => {
 
      const [allproducts, setallproducts] = useState([]);
 
      const fetchInfo = async () => {
-          await fetch('http://localhost:3001/allproducts')
+          console.log(api_paths.all_products);
+          await fetch(api_paths.all_products)
                .then((res) => res.json())
                .then((data) => { setallproducts(data) });
      }
@@ -19,8 +21,7 @@ const ListProduct = () => {
 
           let result;
 
-          if (navigator.onLine) 
-          {
+          if (navigator.onLine) {
                result = await swal({
                     title: "Are you sure?",
                     text: "Once deleted, you will not be able to recover this product",
@@ -29,13 +30,12 @@ const ListProduct = () => {
                     dangerMode: true,
                });
           }
-          else
-          {
+          else {
                result = confirm("Are you sure? Once deleted, you will not be able to recover this product");
           }
 
           if (result) {
-               await fetch('http://localhost:3001/remove_product', {
+               await fetch(api_paths.remove_product, {
                     method: 'POST',
                     headers: {
                          Accept: 'application/json',

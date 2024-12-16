@@ -3,6 +3,7 @@ import './AddProduct.css';
 import upload_area from '../../image/upload_area.png';
 import SelectBox from '../SelectBox/SelectBox';
 import { useState } from 'react';
+import api_paths from '../../config/apis';
 
 const AddProduct = () => {
 
@@ -10,7 +11,7 @@ const AddProduct = () => {
      const [productDetails, setproductDetails] = useState({
           name: "",
           image: "",
-          category: "women",
+          category: "womens",
           new_price: "",
           old_price: ""
      });
@@ -24,12 +25,13 @@ const AddProduct = () => {
      }
 
      const Add_Product = async () => {
+
           let responseData;
           let product = productDetails;
           let formData = new FormData();
           formData.append('product', Image);
 
-          await fetch('http://localhost:3001/upload', {
+          await fetch(api_paths.ImageUpload, {
                method: 'POST',
                headers: {
                     Accept: 'application/json',
@@ -43,23 +45,24 @@ const AddProduct = () => {
                console.log(product);
 
                // Send This product to /addproduct
-               await fetch('http://localhost:3001/addproduct', {
+               await fetch(api_paths.add_product, {
+
                     method: 'POST',
                     headers: {
                          Accept: 'application/json',
                          'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(product),
-               }).then((resp) => resp.json().then((data) => {
-                    if (data.success) 
-                    {
-                         navigator.onLine ? swal("Product Added Successfully", { icon: "success", }) : alert("Product Added");
-                    }
-                    else 
-                    {
-                         navigator.onLine ? swal("Failed", { icon: "error", }) : alert("Failed")
-                    }
-               }))
+               })
+                    .then((resp) => resp.json()
+                         .then((data) => {
+                              if (data.success) {
+                                   navigator.onLine ? swal("Product Added Successfully", { icon: "success", }) : alert("Product Added");
+                              }
+                              else {
+                                   navigator.onLine ? swal("Failed", { icon: "error", }) : alert("Failed")
+                              }
+                         }))
 
           }
      }

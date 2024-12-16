@@ -2,15 +2,16 @@ import React, { useEffect } from 'react';
 import './Popular.css';
 import Item from '../Item/Item';
 import { useState } from 'react';
+import api_paths from '../../config/apis';
 
 const Popular = () => {
 
      const [popular, setpopular] = useState([]);
 
      useEffect(() => {
-          fetch('http://localhost:3001/popularinwomen')
+          fetch( api_paths.popularinwomen )
                .then((response) => response.json())
-               .then((data) => setpopular(data));
+               .then((data) => setpopular(data)); 
      }, []);
 
      return (

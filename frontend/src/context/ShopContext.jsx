@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 import Swal from 'sweetalert2';
 
 
@@ -20,7 +21,7 @@ const ShopContextProvider = (props) => {
      const [cartItem, setcartItem] = useState(getDefaultCart());
 
      useEffect(() => {
-          fetch('http://localhost:3001/allproducts')
+          fetch('http://localhost:3001/products/allproducts')
                .then((response) => response.json())
                .then((data) => setall_product(data))
 
@@ -54,17 +55,27 @@ const ShopContextProvider = (props) => {
                })
                     .then((response) => response.json())
                     .then((data) => {
-                         Swal.fire({
-                              title: "Added to Cart",
-                              icon: "success",
+                         // Swal.fire({
+                         //      title: "Added to Cart",
+                         //      icon: "success",
+                         // });
+                         toast.success("Added to Cart", {
+                              position: "bottom-center",
+                              autoClose: 3000,
+                              hideProgressBar: false,
+                              closeOnClick: true,
+                              pauseOnHover: false,
+                              draggable: true,
+                              progress: undefined,
+                              theme: "dark",
                          });
                     })
           }
           else {
                Swal.fire({
-                    title : "Please Login/Register",
+                    title: "Please Login/Register",
                     text: "Login to Add to Cart",
-                    icon : "warning",
+                    icon: "warning",
                     timer: 3000
                })
                window.location.replace("#/login");

@@ -19,8 +19,9 @@ const Navbar = () => {
                text: "After Logout You have to login again!",
                icon: 'warning',
                showCancelButton: true,
-               confirmButtonText: 'Logout',
+               confirmButtonText: `<i class="fa-solid fa-power-off"></i> Logout`,
                cancelButtonText: 'Cancel',
+               showLoaderOnConfirm : true,
           })
                .then(async (result) => {
                     if (result.isConfirmed) {
@@ -51,17 +52,19 @@ const Navbar = () => {
                     <li onClick={() => { setMenu("womens") }}><Link to='/womens'>Women</Link>{menu === "womens" ? <hr /> : <></>}</li>
                     <li onClick={() => { setMenu("kids") }}><Link to='/kids'>Kids</Link>{menu === "kids" ? <hr /> : <></>}</li>
                </ul>
-               <div className="nav-login-cart">
+               <div className="nav-login-cart"> 
                     {
                          localStorage.getItem("auth-token")
                               ? <button onClick={() => logout()}>Logout</button>
                               : <Link to='/login' > <button>Login</button></Link>
                     }
-                    <Link to='/cart'><i className="cart-icon fa-solid fa-cart-shopping"></i></Link>
-                    <div className="nav-cart-count">{getTotalCartItems()}</div>
+                    <div className="cart-box">
+                         <Link to='/cart'><i className="cart-icon fa-solid fa-cart-shopping"></i></Link>
+                         <div className="nav-cart-count">{getTotalCartItems()}</div>
+                    </div>
                </div>
           </div>
      );
 }
 
-export default Navbar;
+export default Navbar; 
