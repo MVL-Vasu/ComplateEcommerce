@@ -1,6 +1,6 @@
 const express = require('express');
 const Product = require('../models/Product');
-const { addproduct, remove_product, allproducts, popularinwomen, newcollections } = require("../controllers/ProductController");
+const { singleproduct, addproduct, remove_product, allproducts, popularinwomen, newcollections } = require("../controllers/ProductController");
 
 const router = express.Router();
 
@@ -19,6 +19,9 @@ router.get('/popularinwomen', popularinwomen);
 
 // Get Letest Products
 router.get('/newcollections', newcollections);
+
+
+router.get('/:productId', singleproduct);
 
 module.exports = router;
 

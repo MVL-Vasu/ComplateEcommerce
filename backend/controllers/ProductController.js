@@ -45,8 +45,6 @@ const remove_product = async (req, res) => {
 
      await Product.findOneAndDelete({ id: req.body.id });
 
-     console.log("removed");
-
      res.json({
 
           success: true,
@@ -80,4 +78,18 @@ const newcollections = async (req, res) => {
 
 }
 
-module.exports = { addproduct, remove_product, allproducts, popularinwomen, newcollections};
+const singleproduct = async (req, res) => {
+
+     let productid = req.params.productId;
+     
+     let product = await Product.findOne({ id: productid });
+     
+     if (!product) {
+          return res.status(404).json("product not found");
+     }
+     console.log(product);
+     res.json(product);
+
+}
+
+module.exports = { singleproduct, addproduct, remove_product, allproducts, popularinwomen, newcollections };

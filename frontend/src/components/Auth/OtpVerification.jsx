@@ -1,62 +1,163 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 // import Input from '../UI/Input';
 import './Auth.css';
 import Button from '../UI/Button';
-import { useLocation, useNavigate } from 'react-router-dom';
+import Countdown from 'react-countdown';
+
+import { Navigate, useNavigate } from 'react-router-dom';
 import OtpInput from 'otp-input-react';
-import { auth } from "./firebase"; // Ensure this path is correct
-import { signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
+import api_path from '../../config/apis'
+import { toast } from 'react-toastify';
 
 
 const OtpVerification = () => {
 
      const Navigator = useNavigate();
 
-     const [otp, setotp] = useState(""); 
+     
+     const [otp, setotp] = useState("");
+     const [otptimer, setotptimer] = useState(null);
+     const [IsOtpExpired, setIsOtpExpired] = useState(false);
+     const targetTime = useMemo(()=> Date.now() + otptimer,[otptimer]);
+     
+     // const location = useLocation();
+     // const { phonenumber } = location.state || {};
+     // const number = `+919313297933`;
 
-     const location = useLocation();
-     const { phonenumber } = location.state || {};
-     const number = `+919313297933`;
+     useEffect(() => {
 
-     const handleSubmit = (e) => {
-          e.preventDefault();
-          
-          console.log(otp);
-     };
-
-     // Initialize Recaptcha
-     const setupRecaptcha = () => {
-          if (!window.recaptchaVerifier) {
-               window.recaptchaVerifier = new RecaptchaVerifier(
-                    auth,
-                    "recaptcha-container",
-                    {
-                         size : "invisible",
-                         callback : (response) => {
-                              console.log("Recaptcha Verified");
-                         },
-                    }
-               );
+          if (!sessionStorage.getItem('otpSent')) {
+               Navigator('/forgetpass');
           }
 
-     };
+          const getTime = async () => {
+               try {
+                    const response = await fetch(api_path.GetOtpTimer, {
+                         method: 'POST',
+                         body: JSON.stringify({ token: localStorage.getItem('passToken') }),
+                         headers: {
+                              'Content-Type': 'application/json',
+                         }
+                    })
 
-     const handleSendOtp = () => {
-          setupRecaptcha();
-          const phoneNumber = "+919313297933"; // Replace with the actual phone number
-          // const phoneNumber = "+917487015447"; // Replace with the actual phone number
-          console.log(phoneNumber);
-          const appVerifier = window.recaptchaVerifier;
+                    let result = await response.json();
 
-          signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-               .then((confirmationResult) => {
-                    // SMS sent successfully
-                    window.confirmationResult = confirmationResult;
-                    console.log("OTP sent");
-               })
-               .catch((error) => {
-                    console.error("Error sending OTP", error);
+                    if (result.success) {
+
+                         const remainingtime = new Date(result.sendtime).getTime() - new Date().getTime();
+
+                         if (remainingtime > 0) {
+                              setotptimer(remainingtime);
+                         }
+                         else {
+                              setIsOtpExpired(true);
+                         }
+                    }
+                    else {
+                         toast.error(result.error);
+                    }
+
+               } catch (error) {
+                    console.log(error);
+                    toast.error(error);
+               }
+          }
+          getTime();
+     },[Navigator]);
+
+     const resentOtp = async () => {
+
+          const response = await fetch(api_path.forgetpass, {
+               method: 'POST',
+               headers: {
+                    'Content-Type': 'application/json'
+               },
+               body: JSON.stringify({ email: localStorage.getItem('forgetEmail') })
+          })
+
+          const result = await response.json();
+
+          if (result.success) {
+
+               toast.success(result.message, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
                });
+
+               localStorage.setItem('passToken', result.token);
+               setotptimer(1 * 60 * 1000);
+               setIsOtpExpired(false);
+
+
+
+               // localStorage.setItem('forgetEmail', result.token);
+
+          } else {
+
+               toast.error(result.error, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+               });
+
+          }
+
+     }
+
+     const handleSendOtp = async () => {
+
+          const response = await fetch(api_path.otpverify, {
+               method: 'POST',
+               body: JSON.stringify({ otp: otp }),
+               headers: {
+                    'Content-Type': 'application/json',
+               }
+          })
+
+          const result = await response.json();
+
+          console.log(result);
+
+          if (result.success) {
+               toast.success(result.message, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+               });
+
+               sessionStorage.setItem('otpVerified', 'true');
+               Navigator("/updatepass");
+
+          }
+          else {
+               toast.error(result.error, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+               });
+          }
+
      };
 
 
@@ -75,34 +176,41 @@ const OtpVerification = () => {
                          <div className="text-line2">OTP send to 9313297933 <span>Change</span> </div>
                     </div>
 
-                    <form action="">
+                    {/* <form action=""> */}
 
-                         <div className="input-container">
-                              <OtpInput
-                                   value={otp}
-                                   OTPLength={6}
-                                   otpType={"number"}
-                                   onChange={setotp}
-                                   disabled={false}
-                                   autoFocus
-                                   className="otp-container"
-                              ></OtpInput>
-                         </div>
+                    <div className="input-container">
+
+                         <OtpInput
+                              value={otp}
+                              OTPLength={6}
+                              otpType={"number"}
+                              onChange={setotp}
+                              disabled={false}
+                              autoFocus
+                              className="otp-container"
+                         ></OtpInput>
+
+                    </div>
 
 
-                         <div className="resend-otp-timer form-link">
-                              <p>Didn't receive an SMS? </p> <span>Resend OTP</span>
-                         </div>
+                    <div className="resend-otp-timer form-link">
 
-                         <Button text={"Verify Otp"} onClick={handleSendOtp} type={"submit"} />
+                         {otptimer !== null && !IsOtpExpired
+                              ? (<Countdown onComplete={() => { setIsOtpExpired(true) }} date={targetTime} />)
+                              : (<p>Didn't receive an SMS? <span onClick={resentOtp}>Resend OTP</span></p>)
+                         }
 
-                         <div className='form-link'>
+                    </div>
 
-                              <p>Already have an account? <span onClick={() => { Navigator("/login") }}>Login</span> </p>
+                    <Button text={"Verify Otp"} onClick={handleSendOtp} />
 
-                         </div>
+                    <div className='form-link'>
 
-                    </form>
+                         <p>Already have an account? <span onClick={() => { Navigator("/login") }}>Login</span> </p>
+
+                    </div>
+
+                    {/* </form> */}
                </div>
           </div>
      );

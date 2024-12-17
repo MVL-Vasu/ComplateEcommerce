@@ -50,7 +50,7 @@ const ValidatePass = (pass, errorbox, label) => {
      else {
           pass.style.outline = "2px solid red";
           errorbox.style.display = "block";
-          errorbox.innerText = "please enter atleast 8 character with number and small letters";
+          errorbox.innerText = "Enter atleast 8 character with number and letters";
           label.style.color = "red";
           // checkIcon.style.display = "none";
      }
@@ -81,6 +81,29 @@ const ValidateUsername = (username, errorbox, label) => {
 
 }
 
+const ValidateConfPass = (pass, confirmpass, errorbox, label) => {
+
+     if (pass.value !== "") {
+
+          if (confirmpass.value === pass.value) {
+
+               confirmpass.style.outline = "2px solid green";
+               errorbox.style.display = "none";
+               label.style.color = "green";
+
+          }
+          else {
+
+               confirmpass.style.outline = "2px solid red";
+               errorbox.style.display = "block";
+               errorbox.innerText = "password don't matched";
+               label.style.color = "red";
+
+          }
+
+     }
+
+}
 
 const IsNull = (field) => {
      if (field === "") {
@@ -98,6 +121,111 @@ const IsPatternMatched = (field, pattern) => {
      }
 }
 
+const ValidateUpdatePass = (pass, confirmpass, errorbox, labels) => {
+
+     let IsError = false;
+
+     if (pass.value === "") {
+
+          pass.style.outline = "2px solid red";
+          pass.focus();
+
+          errorbox.current[0].innerText = `please enter password`;
+
+          errorbox.current[0].style.display = "block";
+
+          labels.current[0].style.color = "red";
+
+          IsError = true;
+
+     }
+
+     if (!passwordPattern.test(pass.value)) {
+
+          pass.style.outline = "2px solid red";
+
+          errorbox.current[0].innerText = `enter atleast 8 character with number and letters`;
+
+          errorbox.current[0].style.display = "block";
+
+          labels.current[0].style.color = "red";
+
+          IsError = true;
+
+     }
+
+     if (confirmpass.value !== pass.value) {
+
+          confirmpass.style.outline = "2px solid red";
+          confirmpass.focus();
+
+          errorbox.current[1].innerText = "password don't matched";
+
+          errorbox.current[1].style.display = "block";
+
+          labels.current[1].style.color = "red";
+
+          IsError = true;
+
+     }
+
+     // [pass, confirmpass].forEach((field, i) => {
+
+     //      let name = field.getAttribute("name");
+
+     //      if (field.value === "") {
+
+     //           field.style.outline = "2px solid red";
+
+     //           errorbox.current[i].innerText = `${name} is required`;
+
+     //           errorbox.current[i].style.display = "block";
+
+     //           labels.current[i].style.color = "red";
+
+     //           IsError = true;
+
+     //      }
+
+     // })
+
+     // Inputs.forEach((element, i) => {
+
+     //      if (element != null && errorbox.current[i] != null) {
+
+     //           let name = element.getAttribute("name");
+
+     //           if (element.value === "") {
+
+     //                element.style.outline = "2px solid red";
+
+     //                errorbox.current[i].innerText = `${name} is required`;
+
+     //                errorbox.current[i].style.display = "block";
+
+     //                labels.current[i].style.color = "red";
+
+     //                IsError = true;
+
+     //           }
+     //           else if (name === "password" && !passwordPattern.test(element.value)) {
+
+     //                element.style.outline = "2px solid red";
+
+     //                errorbox.current[i].innerText = `enter atleast 8 character with number and small letters`;
+
+     //                errorbox.current[i].style.display = "block";
+
+     //                labels.current[i].style.color = "red";
+
+     //                IsError = true;
+
+     //           }
+     //      }
+     // });
+
+     return IsError;
+}
 
 const validate = (Inputs, errorbox, labels) => {
 
@@ -147,5 +275,5 @@ const validate = (Inputs, errorbox, labels) => {
 
 }
 
-export { ValidateEmail, ValidatePass, ValidateUsername, validate };
+export { ValidateEmail, ValidatePass, ValidateUsername, ValidateConfPass, ValidateUpdatePass, validate };
 // export { validate, inputvalidation };

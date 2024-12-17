@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react';
-import Input from '../UI/Input';
-import './Auth.css';
-import Button from '../UI/Button';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { validate, ValidateEmail } from './ValidateData';
+import { toast } from 'react-toastify';
+import './Auth.css';
 
 import api_path from '../../config/apis'
+import { validate, ValidateEmail } from './ValidateData';
+
+import Input from '../UI/Input';
+import Button from '../UI/Button';
+
 
 
 const ForgetPass = () => {
@@ -38,6 +40,7 @@ const ForgetPass = () => {
                const result = await response.json();
 
                if (result.success) {
+
                     toast.success(result.message, {
                          position: "top-center",
                          autoClose: 3000,
@@ -48,12 +51,28 @@ const ForgetPass = () => {
                          progress: undefined,
                          theme: "light",
                     });
-                    window.setTimeout(() => {
-                         Navigator("/verify", { state: { email } });
-                    },750)
-               }
-               // console.log(result);
 
+                    localStorage.setItem('passToken', result.token);
+                    localStorage.setItem('forgetEmail', email);
+
+                    // Simulate OTP sending
+                    sessionStorage.setItem('otpSent', 'true');
+                    Navigator("/verify", { state: { email } });
+
+               } else {
+
+                    toast.error(result.error, {
+                         position: "top-center",
+                         autoClose: 3000,
+                         hideProgressBar: false,
+                         closeOnClick: true,
+                         pauseOnHover: false,
+                         draggable: true,
+                         progress: undefined,
+                         theme: "light",
+                    });
+
+               }
 
           }
 

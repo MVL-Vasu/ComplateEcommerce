@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const { error } = require("console");
 const Users = require('./models/Users');
 
 //IMPORT THE MONGODB CONNECTION FILE FROM UTILS FOLDER
@@ -35,6 +34,13 @@ app.post('/login', require('./controllers/Login'));
 
 
 app.post('/forgetpass', require('./controllers/ForgetPass'));
+
+app.post('/verify', require('./controllers/VerifyOtp'));
+
+app.post('/GetOtpTimer' , require('./controllers/GetOtpTimer'));
+
+app.post('/UpdatePass' , require('./controllers/UpdatePass'));
+
 
 // ===================================> IMAGE UPLOAD APIS <=================================== //
 
@@ -100,7 +106,6 @@ app.post('/removefromcart', fetchuser, async (req, res) => {
 // ENDPOINT TO GET CART DATA
 
 app.post('/getcart', fetchuser, async (req, res) => {
-     console.log("Get cart");
      let userdata = await Users.findOne({ _id: req.user.id })
      res.json(userdata.cartData)
 })

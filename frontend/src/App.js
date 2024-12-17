@@ -16,6 +16,9 @@ import Login from './components/Auth/Login';
 import SignUp from './components/Auth/SignUp';
 import ForgetPass from './components/Auth/ForgetPass';
 import OtpVerification from './components/Auth/OtpVerification';
+import UpdatePass from './components/Auth/UpdatePass';
+
+// import Super from './components/Super';
 
 function App() {
   return (
@@ -36,8 +39,12 @@ function App() {
           <Route path='/cart' element={<Cart />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
+          <Route path='/forgetPass' element={<ForgetPass />} />
+
+          {/* <Route element={<Super />}> */}
           <Route path='/verify' element={<OtpVerification />} />
-          <Route path='/forgetPass' element={<ForgetPass/>} />
+          <Route path='/updatepass' element={<UpdatePass />} />
+          {/* </Route> */}
 
 
         </Routes>
