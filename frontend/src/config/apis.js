@@ -11,7 +11,10 @@ const api_paths = {
      newcollections: `${localpath}products/newcollections`,
      GetOtpTimer : `${localpath}GetOtpTimer`,
      UpdatePass : `${localpath}UpdatePass`,
-     singleproduct : `${localpath}products`
+     singleproduct : `${localpath}products`,
+     addtocart : `${localpath}cart/addtocart`,
+     removefromcart : `${localpath}cart/removefromcart`,
+     getcartitem : `${localpath}cart/getcartitem`,
 
 }
 

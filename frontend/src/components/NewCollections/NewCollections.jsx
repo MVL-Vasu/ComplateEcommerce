@@ -3,16 +3,48 @@ import './NewCollections.css';
 import Item from '../Item/Item';
 import { useState } from 'react';
 import api_paths from '../../config/apis';
+import Loader from '../Loader/Loader';
 
 const NewCollections = () => {
 
      const [newcollection, setnewcollection] = useState([]);
+     const [loading, setloading] = useState(true);
+     // const [iserror, setiserror] = useState(false);
+
+     const fetchproduct = async () => {
+
+          try {
+
+               await fetch(api_paths.newcollections)
+                    .then((response) => response.json())
+                    .then((data) => setnewcollection(data));
+
+          }
+          catch (error) {
+
+               console.error(error)
+               // setiserror(true);
+
+          }
+          finally {
+
+               // setTimeout(() => {
+               //      setloading(false);
+               // }, 300)
+               setloading(false);
+
+          }
+     }
 
      useEffect(() => {
-          fetch(api_paths.newcollections)
-               .then((response) => response.json())
-               .then((data) => setnewcollection(data))
+
+          fetchproduct();
+
      }, []);
+
+     if (loading) {
+          return <Loader />
+     }
 
      return (
           <div className='newcollections'>
@@ -26,5 +58,7 @@ const NewCollections = () => {
           </div>
      );
 }
+
+
 
 export default NewCollections;

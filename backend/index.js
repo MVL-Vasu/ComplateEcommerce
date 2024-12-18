@@ -1,7 +1,6 @@
 const port = 3001;
 const express = require("express");
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
@@ -61,54 +60,24 @@ app.use('/products', ProductRouter);
 // ====================================>  CART APIS <==================================== //
 
 
-// CREATING MIDDLEWARE TO FETCH USER
-const fetchuser = async (req, res, next) => {
-     const token = req.header('auth-token');
-     if (!token) {
-          console.log("please login first");
-     }
-     else {
-          try {
-               const data = jwt.verify(token, 'secret_ecom');
-               req.user = data.user;
-               next();
-          }
-          catch (error) {
-               res.status(401).send({ errors: "please authenticate using a valid token" })
-          }
-     }
-}
+
 
 // END POINT FOR ADDING PRODUCT IN CART
 
-app.post('/addtocart', fetchuser, async (req, res) => {
-     let userdata = await Users.findOne({ _id: req.user.id });
-     userdata.cartData[req.body.itemId] += 1;
-     await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userdata.cartData });
-     res.send({
-          success: true,
-     })
-})
+// const Cart  = require("./models/Cart");
+
+app.use("/cart", require("./routes/CartRouter")); 
+
 
 // END POINT FOR REMOVING PRODUCT FROM CART
 
-app.post('/removefromcart', fetchuser, async (req, res) => {
-     let userdata = await Users.findOne({ _id: req.user.id });
-     if (userdata.cartData[req.body.itemId] > 0) {
-          userdata.cartData[req.body.itemId] -= 1;
-          await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userdata.cartData });
-          res.send({
-               success: true,
-          })
-     }
-})
 
-// ENDPOINT TO GET CART DATA
+// // ENDPOINT TO GET CART DATA
 
-app.post('/getcart', fetchuser, async (req, res) => {
-     let userdata = await Users.findOne({ _id: req.user.id })
-     res.json(userdata.cartData)
-})
+// app.post('/getcart', fetchuser, async (req, res) => {
+//      let userdata = await Users.findOne({ _id: req.user.id })
+//      res.json(userdata.cartData)
+// })
 
 
 app.listen(port, (error) => {

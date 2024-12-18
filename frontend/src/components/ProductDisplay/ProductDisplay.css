@@ -1,29 +1,29 @@
 .productdisplay{
      display: flex;
-     margin: 0px 130px;
+     margin: 0px 150px;
 }
 
 .productdisplay-left{
      display: flex;
      gap: 12px;
-     height: 510px;
+     height: 530px;
 }
 
 .productdisplay-img-list{
      display: grid;
-     width: 97px;
+     width: 90px;
      grid-template-rows: repeat(4,1fr);
-     max-height: 510px;
+     max-height: 530px;
      gap: 10px;
 }
 
 .productdisplay-img-list img{
-     height: 120px;
+     height: 125px;
      width: 100%;
 }
 
 .productdisplay-main-img{
-     width: 430px;
+     width: 400px;
      height: 100%;
 }
 

@@ -87,7 +87,7 @@ const singleproduct = async (req, res) => {
      if (!product) {
           return res.status(404).json("product not found");
      }
-     console.log(product);
+     // console.log(product);
      res.json(product);
 
 }
